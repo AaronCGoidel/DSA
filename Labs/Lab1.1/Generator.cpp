@@ -1,5 +1,5 @@
 /*
- * 1.cpp
+ * Generator.cpp
  * Author: Aaron Goidel
  */
 
