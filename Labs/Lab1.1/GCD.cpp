@@ -17,6 +17,7 @@ int euclid(int a, int b){
 }
 
 int main(){
+	// this whole thing is mostly just lazy input taking
 	int a, b;
 	cout << "Enter your first integer" << "\n" << "> ";
 	cin >> a;
@@ -37,5 +38,5 @@ int main(){
 	}
 
 	cout << "The greatest common divisor of " << a << " and " << b << " is: "
-	 << euclid(a, b) << "\n";
+	 << euclid(a, b) << "\n"; // this is really where the magic happens.
 }
