@@ -4,12 +4,11 @@
 #include <iostream>
 
 using namespace std;
-
 bool one(int num){
   if(num <= 1) return false;
-  if(num <= 3) return true;
+  if(num == 2 || num == 3) return true;
   
-  for(int i = 2; i < round(sqrt(num)); i++){
+  for(int i = 2; i < num; i++){
     if(num % i == 0) return false;
   }
   return true;
@@ -20,13 +19,8 @@ bool two(int num){
   if(num <= 3) return true;
   if(num % 2 == 0 || num % 3 == 0) return false;
 
-  int i = 5;
-  int j = 2;
-
-  while(i <= sqrt(num)){
-    if(num % i == 0) return false;
-    i += j;
-    j = 6 - j;
+  for(int i = 5; i <= floor(sqrt(num)); i += 6){
+    if(num % i == 0 || num % (i + 2) == 0) return false;
   }
   return true;
 }
@@ -35,10 +29,10 @@ int modPow(int base, int power, int p){
 	int solution = 1;
 	while(power > 0){ 
 		if(power%2 != 0){
-			solution = (solution * base)%p;
+			solution = ((long)solution * (long)base)%p;
 		}
 		power /= 2;
-		base = (base * base)%p;
+		base = ((long)base * (long)base)%p;
 	}
 	return solution;
 }

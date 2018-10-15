@@ -3,7 +3,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iomanip>
 #include "PrimeAlgos.h"
+#include <assert.h> 
 
 using namespace std;
 
@@ -94,7 +96,7 @@ void output(vector<double> data, string filename){
   outfile.open(filename, std::ios_base::app);
   // iterate over the vector, outputting the data to the file
   for (int i = 0; i < data.size()-1; i++){
-    outfile << data[i] << ",";
+    outfile << fixed << setprecision(10) << data[i] << ",";
   }
   outfile << data[data.size()-1] << endl;
 
@@ -103,28 +105,61 @@ void output(vector<double> data, string filename){
 }
 
 int main(){
+  // TESTS
+  assert(one(1) == false);
+  assert(one(2));
+  assert(one(3));
+  assert(one(4) == false);
+  assert(one(5));
+  assert(one(100) == false);
+  assert(one(199128) == false);
+  assert(one(19128312) == false);
+  assert(one(7219));
+  assert(one(4973));
+  assert(one(23167));
+
+  assert(two(1) == false);
+  assert(two(2));
+  assert(two(3));
+  assert(two(4) == false);
+  assert(two(5));
+  assert(two(100) == false);
+  assert(two(199128) == false);
+  assert(two(19128312) == false);
+  assert(two(7219));
+  assert(two(4973));
+  assert(two(23167));
+
+  assert(three(1) == false);
+  assert(three(2));
+  assert(three(3));
+  assert(three(4) == false);
+  assert(three(5));
+  assert(three(100) == false);
+  assert(three(199128) == false);
+  assert(three(19128312) == false);
+  assert(three(7219));
+  assert(three(4973));
+  assert(three(23167));
+
   prime_fn* a = &one;
   prime_fn* b = &two;
   prime_fn* c = &three;
 
-  vector<vector<double> > times(3);
+  vector<double> times;
   vector<vector<int> > nums = getArrays("primes.txt");
 
   for(int i = 0; i < nums.size(); i++){
     for(int j = 0; j < nums[i].size(); j++){
       int num = nums[i][j];
-      times[0].push_back(measureTime(a, num));
-      times[1].push_back(measureTime(b, num));
-      times[2].push_back(measureTime(c, num));
+      times.push_back(num);
+      times.push_back(measureTime(a, num));
+      times.push_back(measureTime(b, num));
+      times.push_back(measureTime(c, num));
+
+      output(times, "OUT.csv");
+      times.clear();
     }
-    output(times[0], "ONE.csv");
-    times[0].clear();
-
-    output(times[1], "TWO.csv");
-    times[1].clear();
-
-    output(times[2], "THREE.csv");
-    times[2].clear();
   }
 
   return 0;
