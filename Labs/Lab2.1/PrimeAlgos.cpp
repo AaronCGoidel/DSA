@@ -4,6 +4,7 @@
 #include <iostream>
 
 using namespace std;
+// O(n)
 bool one(int num){
   if(num <= 1) return false;
   if(num == 2 || num == 3) return true;
@@ -14,13 +15,14 @@ bool one(int num){
   return true;
 }
 
+// O(sqrt(n))
 bool two(int num){
   if(num <= 1) return false;
-  if(num <= 3) return true;
-  if(num % 2 == 0 || num % 3 == 0) return false;
+  if(num == 2) return true;
+  if(num % 2 == 0) return false;
 
-  for(int i = 5; i <= floor(sqrt(num)); i += 6){
-    if(num % i == 0 || num % (i + 2) == 0) return false;
+  for(int i = 3; (i * i) <= num; i += 2){
+    if(num % i == 0) return false;
   }
   return true;
 }
@@ -37,16 +39,37 @@ int modPow(int base, int power, int p){
 	return solution;
 }
 
-bool three(int num){
+bool miller(int d, int n) { 
+  int a = 2 + rand() % (n - 4); 
+  int x = modPow(a, d, n); 
+  
+  if(x == 1 || x == n - 1) return true; 
+
+  while(d != n - 1){ 
+    x = (x * x) % n; 
+    d = d * 2; 
+  
+    if(x == 1) return false; 
+    if(x == n - 1) return true; 
+  } 
+  return false; 
+} 
+
+// O(k log^3 n)
+// for simplicity k = 5 in this assignment
+bool three(int n){ 
   srand(time(NULL));
 
-  if(num == 1) return false;
+  if (n <= 1 || n == 4) return false; 
+  if (n <= 3) return true; 
   
-  int iters = 5;
-  for(int i = 0; i < iters; i++){
-    int a = rand()%(num - 1) + 1;
-    
-    if(modPow(a, num - 1, num) != 1) return false;
+  int d = n - 1; 
+  while(d % 2 == 0){
+    d /= 2; 
   }
-  return true;
-}
+
+  for (int i = 0; i < 5; i++){
+    if(!miller(d, n)) return false; 
+  }
+  return true; 
+} 
