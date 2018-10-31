@@ -1,0 +1,5 @@
+Queue
+void enqueue(Object elt): puts an element in the queue
+Object dequeue(): removes and returns the first element into the queue
+Object peek(): returns the next element to dequeue
+int length(): returns length of queue

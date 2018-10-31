@@ -1,0 +1,5 @@
+Stack ADT
+Object pop(): removes and returns the thing at the top of the stack
+void push(Object elt): pushes element onto the top of the stack
+Object peek(): returns the element at the top of the stack
+int length(): returns the length of the stack 
