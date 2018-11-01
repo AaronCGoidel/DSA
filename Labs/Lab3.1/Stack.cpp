@@ -1,3 +1,7 @@
+/* 
+  Stack implementation using std::vector
+ */
+
 #include <iostream>
 #include "Stack.h"
 
@@ -6,23 +10,18 @@ Stack<T>::Stack(){
   size = 0;
 }
 
-// template <typename T>
-// Stack<T>::~Stack(){
-  // delete
-// }
-
 template <typename T>
 void Stack<T>::push(T data){
-  elements.push_back(data);
+  elements.push_back(data); // push new thing to front of vector
   size++;
 }
 
 template <typename T>
 T Stack<T>::pop(){
-  if(isEmpty()) throw std::out_of_range("No element");
+  if(isEmpty()) throw std::out_of_range("No element"); // throw if empty
 
-  T data = elements.back();
-  elements.pop_back();
+  T data = elements.back(); // set output node to last thing
+  elements.pop_back(); // remove last thing from vector
 
   size--;
   return data;
@@ -30,9 +29,9 @@ T Stack<T>::pop(){
 
 template <typename T>
 T Stack<T>::peek(){
-  if(isEmpty()) throw std::out_of_range("No element");
+  if(isEmpty()) throw std::out_of_range("No element"); // throw if empty
 
-  T data = elements.back();
+  T data = elements.back(); // return last thing
   return data;
 }
 

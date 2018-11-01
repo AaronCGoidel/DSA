@@ -1,3 +1,7 @@
+/*
+  Queue implmentation using a linked list 
+ */
+
 #include <iostream>
 #include "Queue.h"
 
@@ -13,7 +17,7 @@ Queue<T>::~Queue(){
   Node<T>* current = head;
   Node<T>* next = NULL;
 
-  while(current != NULL){
+  while(current != NULL){ // loop over elements in linked list
     next = current->getNext();
     delete current;
     current = next;
@@ -22,48 +26,50 @@ Queue<T>::~Queue(){
 
 template <typename T>
 int Queue<T>::getSize(){
-  return size;
+  return size; // this one doesn't need explaining
 }
 
 template <typename T>
 bool Queue<T>::isEmpty(){
-  return head == NULL;
+  return head == NULL; // this one also doesn't need explaining
 }
 
 template <typename T>
 void Queue<T>::enqueue(T data){
-  Node<T>* element = new Node<T>(data);
+  Node<T>* element = new Node<T>(data); // create new node with value of data
 
-  if(isEmpty()){
-    head = element;
+  if(isEmpty()){ // special case: this is the first node
+    head = element; // set both front and back pointers to this element
     tail = element;
     size = 1;
     return;
   }
-
-  tail->setNext(element);
-  tail = element;
+  // general case
+  tail->setNext(element); // set last element's next to new node
+  tail = element; // set back pointer to new node
   size++;
 }
 
 template <typename T>
 T Queue<T>::dequeue(){
+  // if there is nothing to return throw
   if(isEmpty()) throw std::out_of_range("No element");
 
-  Node<T>* retrieved = head;
-  head = head->getNext();
-  T data = retrieved->getElement();
+  Node<T>* retrieved = head; // set node to output to the first node
+  head = head->getNext(); // reset front pointer to second element
+  T data = retrieved->getElement(); // set return value to data from old head
   
   size--;
-  delete retrieved;
+  delete retrieved; // free memory from returned node
   
   return data;
 }
 
 template <typename T>
 T Queue<T>::peek(){
+  // throw if empty
   if(isEmpty()) throw std::out_of_range("No element");
-  return head->getElement();
+  return head->getElement(); // return value of front element
 }
 
 int main(){
