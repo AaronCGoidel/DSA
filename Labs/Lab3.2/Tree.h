@@ -7,19 +7,20 @@
 template <typename T>
 class Tree{
   private:
-    std::vector<T> nodes;
+    std::vector<T> nodes; // new empty vector of type T
     int size;
-    void visit(int pos){
+
+    void visit(int pos){ // visit prints element at given position
       std::cout<<nodes[pos]<<"\n";
     }
-    bool isEmpty(){
-      return size == 0;
-    }
 
+    /*
+      TRAVERSAL HELPER FUNCTIONS
+    */
     void inOrderTraversal(int pos){
-      if(2*pos + 1 < size) inOrderTraversal(2*pos + 1);
-      visit(pos);
-      if(2*pos + 2 < size) inOrderTraversal(2*pos + 2);
+      if(2*pos + 1 < size) inOrderTraversal(2*pos + 1); // does this have a left child?
+      visit(pos); // print "root" (i.e. current postion)
+      if(2*pos + 2 < size) inOrderTraversal(2*pos + 2); // does this have a right child?
     }
     void preOrderTraversal(int pos){
       visit(pos);

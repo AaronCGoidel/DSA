@@ -3,35 +3,38 @@
 
 template <typename T>
 Tree<T>::Tree(){
-  size = 0;
+  size = 0; // initialize a new tree with size 0
 }
 
 template <typename T>
 void Tree<T>::insert(T data){
-  if(contains(data)) return;
-  nodes.push_back(data);
-  size++;
+  if(contains(data)) return; // do nothing if the element is already in there
+  nodes.push_back(data); // add to end of array
+  size++; // increment size
 }
 
 template <typename T>
 void Tree<T>::remove(T elem){
-  for(int i = 0; i < size; i++){
-    if(nodes[i] == elem){
-      nodes[i] = nodes.back();
-      size--;
+  for(int i = 0; i < size; i++){ // loop over array
+    if(nodes[i] == elem){ // if this is the value we want
+      nodes[i] = nodes.back(); // put last element in spot we just found target
+      size--; // decrement size
       return;
     }
   }
 }
 
 template <typename T>
-bool Tree<T>::contains(T elem){
-  for(int i = 0; i < size; i++){
+bool Tree<T>::contains(T elem){ 
+  for(int i = 0; i < size; i++){ // simple linear search
     if(nodes[i] == elem) return true;
   }
   return false;
 }
 
+/*
+  THE TRAVERSALS CALL THEIR RECURSIVE HELPERS AT POSITION 0
+*/
 template <typename T>
 void Tree<T>::inOrder(){
   inOrderTraversal(0);
@@ -47,9 +50,10 @@ void Tree<T>::postOrder(){
   postOrderTraversal(0);
 }
 
+
 template <typename T>
 void Tree<T>::breadthFirst(){
-  for(int i = size - 1; i >= 0; i--){
+  for(int i = size - 1; i >= 0; i--){ // iterates backwards through array
     visit(i);
   }
 }
