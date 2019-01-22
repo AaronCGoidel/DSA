@@ -41,48 +41,43 @@ void select(std::vector<int> &nums){
   }
 }
 
-std::vector<int> slice(std::vector<int> &parent, int lo, int hi){
-  auto start = parent.cbegin() + lo;
-  auto end = parent.cbegin() + hi + 1;
-
-  std::vector<int> subvec(start, end);
-  return subvec;
-}
-
-
-
-std::vector<int> merge(std::vector<int> &left, std::vector<int> &right){
-  int i = 0;
-  int j = 0;
-  std::vector<int> merged;
+void merge(std::vector<int> &left, std::vector<int> &right, std::vector<int> &origin){
+  int i = 0, j = 0, k = 0;
 
   while(i < left.size() && j < right.size()){
     if(left[i] < right[j]){
-      merged.push_back(left[i]);
+      origin[k] = left[i];
       i++;
     }else{
-      merged.push_back(right[j]);
+      origin[k] = right[j];
       j++;
     }
+    k++;
   }
   
   std::vector<int> leftover = i < left.size() ? left : right;
 
-  for(int k = i < left.size() ? i : j; k < leftover.size(); k ++){
-    merged.push_back(leftover[k]);
+  for(int l = i < left.size() ? i : j; l < leftover.size(); l++){
+    origin[k] = leftover[l];
   }
-
-  return merged;
 }
+ 
+void mergesort(std::vector<int> &nums){
+  if(nums.size() <= 1) return;
 
-std::vector<int> mergesort(std::vector<int> &nums){
-  if(nums.size() <= 1){
-    return nums;
+  int mid = nums.size()/2;
+  std::vector<int> left;
+  std::vector<int> right;
+
+  for(int i = 0; i < mid; i++){
+    left.push_back(nums[i]);
   }
-  std::vector<int> left = mergesort(slice(nums, 0, nums.size()/2));
-  std::vector<int> right = mergesort(slice(nums, nums.size()/2, nums.size()));
-
-  merge(left, right);
+  for(int j = 0; j < nums.size() - mid; j++){
+    right.push_back(nums[mid + j]);
+  }
+  mergesort(left);
+  mergesort(right);
+  merge(left, right, nums);
 }
 
 void shell(std::vector<int> &nums){
@@ -102,6 +97,90 @@ void shell(std::vector<int> &nums){
   }
 }
 
+void makeHeap(std::vector<int> &nums, int size, int root){
+  int max = root;
+  int left = 2*root + 1;
+  int right = 2*root + 2;
+  if(left < size && nums[left] > nums[max]){
+    max = left;
+  }
+  if(right < size && nums[right] > nums[max]){
+    max = right;
+  }
+
+  if(max != root){
+    int temp = nums[root];
+    nums[root] = nums[max];
+    nums[max] = temp;
+    makeHeap(nums, size, max);
+  }
+}
+
+void heap(std::vector<int> &nums){
+  for(int i = nums.size()/2; i > 0; i--){
+    makeHeap(nums, nums.size(), i);
+  }
+
+  for(int i = nums.size(); i > 0; i--){
+    int temp = nums[0];
+    nums[0] = nums[i];
+    nums[i] = temp; 
+
+    makeHeap(nums, i, 0);
+  }
+}
+
+void count(std::vector<int> &nums){
+  int max = 0;
+  for(int i = 0; i < nums.size(); i++){
+    if(nums[i] < 0){
+      std::cout << "Can\'t count sort negative numbers" << std::endl;
+      return;
+    }
+
+    if(nums[i] > max) max = nums[i];
+  }
+  std::vector<int> counts(max + 1);
+
+  for(int i = 0; i < nums.size(); i++){
+    counts[nums[i]]++;
+  }
+
+  int j = 0;
+  for(int i = 0; i <= max; i++){
+    while(counts[i]-- > 0){
+      nums[j++] = i;
+    }
+  }
+}
+
+void bucket(std::vector<int> &nums){
+  std::vector<int> buckets[nums.size()];
+
+  int max = 0;
+  for(int i = 0; i < nums.size(); i++){
+    if(nums[i] > max){
+      max = nums[i];
+    }
+  }
+
+  for(int i = 0; i < nums.size(); i++){
+    int key = nums[i] / max * nums.size();
+    buckets[key].push_back(nums[i]);
+  }
+
+  for(int i = 0; i < nums.size(); i++){
+    insert(buckets[i]);
+  }
+
+  int originalIndex = 0;
+  for(int i = 0; i < nums.size(); i++){
+    for(int j = 0; i < buckets[i].size(); j++){
+      nums[originalIndex++] = buckets[i][j];
+    }
+  }
+}
+
 int main(){
   std::vector<int> v;
   v.push_back(1);
@@ -114,7 +193,7 @@ int main(){
   }
   std::cout << std::endl;
 
-  shell(v);
+  heap(v);
   for(int i = 0; i < v.size(); i++){
     std::cout << v[i];
   }
