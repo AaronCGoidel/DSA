@@ -1,5 +1,25 @@
 #include <vector>
 #include <iostream>
+#include <stdlib.h>
+
+void print(std::vector<int> &nums){
+  if(nums.size() <= 0) return;
+  int i;
+  for(i = 0; i < nums.size() - 1; i++){
+    std::cout << nums[i] << ", ";
+  }
+  std::cout << nums[i] << std::endl;
+}
+
+void random(std::vector<int> &nums){
+  for(int i = 0; i < nums.size(); i++){
+    int first = rand() % nums.size();
+    int second = rand() % nums.size();
+    int temp = nums[first];
+    nums[first] = nums [second];
+    nums[second] = temp;
+  }
+}
 
 void bubble(std::vector<int> &nums){
   for(int i = 0; i < nums.size(); i++){
@@ -155,47 +175,95 @@ void count(std::vector<int> &nums){
 }
 
 void bucket(std::vector<int> &nums){
-  std::vector<int> buckets[nums.size()];
-
-  int max = 0;
-  for(int i = 0; i < nums.size(); i++){
-    if(nums[i] > max){
-      max = nums[i];
-    }
-  }
+  std::vector<int> buckets[10];
 
   for(int i = 0; i < nums.size(); i++){
-    int key = nums[i] / max * nums.size();
+    int num = nums[i];
+    int key = 0; 
+    do{ 
+      num /= 10; 
+      key++;
+    }while(num != 0);
+
     buckets[key].push_back(nums[i]);
   }
 
-  for(int i = 0; i < nums.size(); i++){
+  for(int i = 0; i < 9; i++){
     insert(buckets[i]);
   }
 
   int originalIndex = 0;
-  for(int i = 0; i < nums.size(); i++){
-    for(int j = 0; i < buckets[i].size(); j++){
-      nums[originalIndex++] = buckets[i][j];
+  for(int i = 0; i < 9; i++){
+    for(int j = 0; j < buckets[i].size(); j++){
+      nums[originalIndex] = buckets[i][j];
+      originalIndex++;
     }
   }
 }
 
 int main(){
+  srand(time(NULL));
   std::vector<int> v;
-  v.push_back(1);
-  v.push_back(9);
+  v.push_back(24);
+  v.push_back(20);
+  v.push_back(2);
+  v.push_back(39);
+  v.push_back(14);
   v.push_back(6);
-  v.push_back(0);
+  v.push_back(22);
+  v.push_back(48);
+  v.push_back(20);
+  v.push_back(38);
+  v.push_back(34);
+  v.push_back(9);
+  v.push_back(8);
+  v.push_back(91);
+  v.push_back(7);
 
-  for(int i = 0; i < v.size(); i++){
-    std::cout << v[i];
-  }
-  std::cout << std::endl;
+  std::cout << "-------BUBBLE SORT-------" << std::endl;
+  print(v);
+  bubble(v);
+  print(v);
+  random(v);
 
+  std::cout << "-------INSERTION SORT-------" << std::endl;
+  print(v);
+  insert(v);
+  print(v);
+  random(v);
+
+  std::cout << "-------SELECTION SORT-------" << std::endl;
+  print(v);
+  select(v);
+  print(v);
+  random(v);
+
+  std::cout << "-------MERGE SORT-------" << std::endl;
+  print(v);
+  select(v);
+  print(v);
+  random(v);
+
+  std::cout << "-------SHELL SORT-------" << std::endl;
+  print(v);
+  shell(v);
+  print(v);
+  random(v);
+  
+  std::cout << "-------HEAP SORT-------" << std::endl;
+  print(v);
   heap(v);
-  for(int i = 0; i < v.size(); i++){
-    std::cout << v[i];
-  }
-  std::cout << std::endl;
+  print(v);
+  random(v);
+
+  std::cout << "-------COUNTING SORT-------" << std::endl;
+  print(v);
+  count(v);
+  print(v);
+  random(v);
+
+  std::cout << "-------BUCKET SORT-------" << std::endl;
+  print(v);
+  bucket(v);
+  print(v);
 }
