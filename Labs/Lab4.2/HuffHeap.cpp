@@ -32,30 +32,31 @@ void HuffHeap::insert(HuffNode* node){
   }
 }
 
-bool removeHelper(vector<HuffNode* > heap, int n){
-  bool left = heap.size() > 2 * n + 1 && *(heap[n]) > *(heap[2 * n + 1]);
-  bool right = heap.size() > 2 * n + 2 && *(heap[n]) > *(heap[2 * n + 2]);
-  return left || right;
-}
-
 HuffNode* HuffHeap::remove(){
   HuffNode* root = heap[0];
-  heap[0] = heap[heap.size() - 1];
+  heap[0] = heap[heap.size()-1];
 
-  int index = 0;
-  while(removeHelper(heap, index)){
-    if(*(heap[2*index + 2]) < *(heap[2*index + 1])){
-      HuffNode* temp = heap[index];
-      heap[index] = heap[2*index + 2];
-      heap[2*index + 2] = temp;
-      index = 2*index + 2;
+  int n = 0;
+  int leftPos = 2 * n + 1;
+  int rightPos = 2 * n + 2;
+
+  while((heap.size() > leftPos && *(heap[n]) > *(heap[leftPos])) ||
+        (heap.size() > rightPos && *(heap[n]) > *(heap[rightPos]))){
+    if(*(heap[rightPos]) < *(heap[leftPos])){
+      HuffNode* temp = heap[rightPos];
+      heap[rightPos] = heap[n];
+      heap[n] = temp;
+      n = rightPos;
     }else{
-      HuffNode* temp = heap[index];
-      heap[index] = heap[2*index + 1];
-      heap[2*index + 1] = temp;
-      index = 2*index + 1;
+      HuffNode* temp = heap[leftPos];
+      heap[leftPos] = heap[n];
+      heap[n] = temp;
+      n = leftPos;
     }
+    leftPos = 2 * n + 1;
+    rightPos = 2 * n + 2;
   }
+
   heap.pop_back();
   return root;
 }
