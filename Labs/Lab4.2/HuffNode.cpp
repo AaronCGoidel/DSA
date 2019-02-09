@@ -12,6 +12,15 @@ using namespace std;
 HuffNode::HuffNode(char c, int i) {
   letter = c;
   count = i;
+  left = NULL;
+  right = NULL;
+}
+
+HuffNode::HuffNode(){
+  letter = 0;
+  count = 0;
+  left = NULL;
+  right = NULL;
 }
 
 HuffNode::HuffNode(HuffNode* l, HuffNode* r) {
@@ -19,6 +28,14 @@ HuffNode::HuffNode(HuffNode* l, HuffNode* r) {
   right = r;
   count = left->getCount() + right->getCount();
   letter = '*';
+}
+
+bool HuffNode::operator<(HuffNode other){
+  return count < other.count;
+}
+
+bool HuffNode::operator>(HuffNode other){
+  return count > other.count;
 }
 
 int HuffNode::getCount()const { return count; }
@@ -38,4 +55,31 @@ void HuffNode::display(){
   if (right != nullptr){
     cout << '\t'; right->display();
   }
+}
+
+bool HuffNode::isLeaf(){
+  return (getLeft() == NULL) && (getRight() == NULL);
+}
+
+string HuffNode::toString(int tab) {
+    std::string out(tab * 2, ' ');
+    if (isLeaf()) {
+        if (getChar() == '\n') {
+            out += "<newline>";
+        } else if (getChar() == ' ') {
+            out += "<space>";
+        } else {
+            out += getChar();
+        }
+        out += ": count=";
+        out += to_string(getCount());
+        out += "\n";
+    } else {
+        out += "+ ";
+        out += to_string(getCount());
+        out += "\n";
+        out += left->toString(tab + 1);
+        out += right->toString(tab + 1);
+    }
+    return out;
 }
