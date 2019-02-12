@@ -36,9 +36,6 @@ HuffHeap* makeHeap(string fileName){
     pQueue->insert(node);
   }
   // pQueue->display();
-  for(int i = 0; i < 8; i++){
-    cout << pQueue->remove()->getChar() << endl;
-  }
   return pQueue;
 }
 
@@ -56,25 +53,33 @@ HuffNode* makeTrie(HuffHeap* heap){
   return root;
 }
 
-string lookup(HuffNode* root, char c, string prevCode, string direction){
-  string currentCode = prevCode + direction;
+bool lookup(HuffNode* root, char c, string &code, string direction){
+  code += direction;
   if(!root->isLeaf()){
-    currentCode = lookup(root->getLeft(), c, currentCode, "0");
-    currentCode = lookup(root->getRight(), c, currentCode, "1");
+    if(lookup(root->getLeft(), c, code, "0")){
+      return true;
+    }else{
+      code.pop_back();
+    }
+    if(lookup(root->getRight(), c, code, "1")){
+      return true;
+    }else{
+      code.pop_back();
+    }
   }else{
     if(root->getChar() == c){
-      return currentCode;
+      return true;
     }else{
-      return prevCode;
+      return false;
     }
   }
-
-  return currentCode;
+  return false;
 }
 
 string encodeChar(HuffNode* trie, char c){
-  // takes in one char and finds its encoding with the trie
-  return lookup(trie, c, "", "");
+  string code;
+  lookup(trie, c, code, "");
+  return code;
 } 
 string encode(HuffNode* trie, string fileName){
   // takes in the trie and filename and uses encodeChar to encode each char
@@ -90,8 +95,18 @@ string encode(HuffNode* trie, string fileName){
 }
 
 int main(){
-  string file = "HuffTest2.txt";
-  makeHeap(file);
-  // HuffNode* trie = makeTrie(makeHeap(file));
+  cout << "------TEST ONE------" << endl;
+  string file = "HuffTest1.txt";
+  HuffNode* trie = makeTrie(makeHeap(file));
+  cout << encode(trie, file) << endl;
+
+  // cout << "------TEST TWO------" << endl;
+  // file = "HuffTest2.txt";
+  // trie = makeTrie(makeHeap(file));
+  // cout << encode(trie, file) << endl;
+
+  // cout << "------TEST THREE------" << endl;
+  // file = "HuffTest3.txt";
+  // trie = makeTrie(makeHeap(file));
   // cout << encode(trie, file) << endl;
 }

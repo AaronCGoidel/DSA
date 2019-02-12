@@ -34,6 +34,10 @@ bool HuffNode::operator<(HuffNode other){
   return count < other.count;
 }
 
+bool HuffNode::operator<=(HuffNode other){
+  return count <= other.count;
+}
+
 bool HuffNode::operator>(HuffNode other){
   return count > other.count;
 }
