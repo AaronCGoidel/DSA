@@ -36,9 +36,9 @@ HuffHeap* makeHeap(string fileName){
     pQueue->insert(node);
   }
   // pQueue->display();
-  for(int i = 0; i < pQueue->getSize(); i++){
-    cout << pQueue->get(i)->getChar() << ", " << pQueue->get(i)->getCount() << endl;
-  }
+  // for(int i = 0; i < pQueue->getSize(); i++){
+  //   cout << pQueue->get(i)->getChar() << ", " << pQueue->get(i)->getCount() << endl;
+  // }
   return pQueue;
 }
 
@@ -52,7 +52,7 @@ HuffNode* makeTrie(HuffHeap* heap){
     heap->insert(root);
   }
 
-  heap->display();
+  // heap->display();
   return root;
 }
 
@@ -97,19 +97,43 @@ string encode(HuffNode* trie, string fileName){
   return out;
 }
 
-int main(){
+void tester(){
   cout << "------TEST ONE------" << endl;
   string file = "HuffTest1.txt";
   HuffNode* trie = makeTrie(makeHeap(file));
   cout << encode(trie, file) << endl;
 
-  // cout << "------TEST TWO------" << endl;
-  // file = "HuffTest2.txt";
-  // trie = makeTrie(makeHeap(file));
-  // cout << encode(trie, file) << endl;
+  cout << "------TEST TWO------" << endl;
+  file = "HuffTest2.txt";
+  trie = makeTrie(makeHeap(file));
+  cout << encode(trie, file) << endl;
 
-  // cout << "------TEST THREE------" << endl;
-  // file = "HuffTest3.txt";
-  // trie = makeTrie(makeHeap(file));
-  // cout << encode(trie, file) << endl;
+  cout << "------TEST THREE------" << endl;
+  file = "HuffTest3.txt";
+  trie = makeTrie(makeHeap(file));
+  cout << encode(trie, file) << endl;
+}
+
+int main(){
+  string filename;
+  HuffNode* trie;
+  ofstream out;
+   
+  filename = "HuffTest1.txt";
+  trie = makeTrie(makeHeap(filename));
+  out.open("Output1.txt");
+  out << encode(trie, filename);
+  out.close();
+ 
+  filename = "HuffTest2.txt";
+  trie = makeTrie(makeHeap(filename));
+  out.open("Output2.txt");
+  out << encode(trie, filename);
+  out.close();
+
+  filename = "HuffTest3.txt";
+  trie = makeTrie(makeHeap(filename));
+  out.open("Output3.txt");
+  out << encode(trie, filename);
+  out.close();
 }
