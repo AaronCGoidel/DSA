@@ -23,7 +23,7 @@ void HuffHeap::insert(HuffNode* node){
 
   int index = heap.size() - 1;
   int parent = (index - 1) / 2;
-  while(index > 0 && *(heap[index]) < *(heap[parent])){
+  while(index > 0 && *(heap[index]) > *(heap[parent])){
     HuffNode* temp = heap[index];
     heap[index] = heap[parent];
     heap[parent] = temp;
@@ -65,8 +65,8 @@ char HuffHeap::peakMin(){
   return heap[0]->getChar();
 }
 
-HuffNode* HuffHeap::get(){
-  return heap[0];
+HuffNode* HuffHeap::get(int pos){
+  return heap[pos];
 }
 
 void HuffHeap::display(){

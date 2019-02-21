@@ -21,7 +21,7 @@ class HuffHeap{
   void insert(HuffNode* node);
   HuffNode* remove();
   char peakMin();
-  HuffNode* get();
+  HuffNode* get(int pos);
   void display();
 };
 #endif

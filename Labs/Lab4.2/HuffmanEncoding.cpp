@@ -36,6 +36,9 @@ HuffHeap* makeHeap(string fileName){
     pQueue->insert(node);
   }
   // pQueue->display();
+  for(int i = 0; i < pQueue->getSize(); i++){
+    cout << pQueue->get(i)->getChar() << ", " << pQueue->get(i)->getCount() << endl;
+  }
   return pQueue;
 }
 

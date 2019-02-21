@@ -28,6 +28,7 @@ private:
   string toString(int tab);
   bool operator<(HuffNode other);
   bool operator<=(HuffNode other);
+  bool operator>=(HuffNode other);
   bool operator>(HuffNode other);
 
 }; 
