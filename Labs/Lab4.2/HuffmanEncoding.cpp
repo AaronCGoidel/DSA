@@ -114,11 +114,11 @@ void tester(){
   cout << encode(trie, file) << endl;
 }
 
-int main(){
+void testfiles(){
   string filename;
   HuffNode* trie;
   ofstream out;
-   
+
   filename = "HuffTest1.txt";
   trie = makeTrie(makeHeap(filename));
   out.open("Output1.txt");
@@ -136,4 +136,16 @@ int main(){
   out.open("Output3.txt");
   out << encode(trie, filename);
   out.close();
+}
+
+int main(int argc, char const* argv[]){
+  if(argc != 3){
+    std::cerr << "Usage: " << argv[0] 
+      << " input.txt output.txt" << std::endl;
+    return 1;
+  }
+  HuffNode* trie = makeTrie(makeHeap(argv[1]));
+  ofstream output(argv[2]);
+  output << encode(trie, argv[1]);
+  output.close();
 }
