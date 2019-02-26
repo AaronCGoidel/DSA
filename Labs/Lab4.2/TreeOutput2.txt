@@ -1,0 +1,9 @@
+  + 10
+    + 6
+      o: count=3
+      + 3
+        h: count=1
+        <space>: count=2
+    + 4
+      g: count=3
+      p: count=1

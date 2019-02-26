@@ -70,9 +70,15 @@ HuffNode* HuffHeap::get(int pos){
 }
 
 void HuffHeap::display(){
-  for (int i = 0; i < heap.size(); i++){
+  for(int i = 0; i < heap.size(); i++){
     cout << heap[i]->toString(1) << endl;
   }
   // cout << heap[0]->toString(4) << endl;
+}
+
+string HuffHeap::output(){
+  string out = "";
+  for(int i = 0; i < heap.size(); i++) out += heap[i]->toString(1);
+  return out;
 }
 

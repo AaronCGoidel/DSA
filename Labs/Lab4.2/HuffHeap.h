@@ -23,5 +23,6 @@ class HuffHeap{
   char peakMin();
   HuffNode* get(int pos);
   void display();
+  string output();
 };
 #endif

@@ -1,0 +1,9 @@
+  + 40
+    + 24
+      + 15
+        d: count=7
+        c: count=8
+      b: count=9
+    + 16
+      a: count=10
+      e: count=6

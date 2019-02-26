@@ -148,4 +148,9 @@ int main(int argc, char const* argv[]){
   ofstream output(argv[2]);
   output << encode(trie, argv[1]);
   output.close();
+
+  string treefile = "Tree";
+  output.open(treefile + argv[2]);
+  output << trie->toString(1);
+  output.close();
 }
