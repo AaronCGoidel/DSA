@@ -36,25 +36,19 @@ bool BST::isLeaf() const{
   return left == nullptr && right == nullptr;
 }
 
-double BST::getSumProb(){
-  cout << "in getSumProb" << endl;
-  if (isLeaf())
-    return prob;
-  double sum = 0;
-  if (left != nullptr)
-    sum += left -> getSumProb();
-  if (right != nullptr)
-    sum += right -> getSumProb();
-  cout << sum << endl;
-  return sum;
+double BST::sumNodes(BST* root){
+  if(root == NULL) return 0;
+  
+  // return sumNodes(root->getLeft()) + sumNodes(root->getRight()) + root->getProb();
+  return 1;
 }
-
 
 void BST::calculateCost(BST* justAdded){
   // happens when a node is added to left or right of current
   // current prob + total cost of node added + sum of all nodes in tree added
   // to do
-  cout << "Calculate cost here" << endl;
+
+  cost = sumNodes(justAdded) + getProb() + justAdded->getCost();
 }
 
 /* Accessors */
@@ -70,13 +64,17 @@ BST* BST::getRight() { return right;}
 bool BST::addLeft(BST* l){
   assert(l->getKey() < key);
   left = l;
+  first = l->getFirst();
   calculateCost(l);
+  return true;
 }
 
 bool BST::addRight(BST* r){
   assert(r->getKey() > key);
   right = r;
+  last = r->getLast();
   calculateCost(r);
+  return true;
 }
 
 void BST::inOrder(){
@@ -86,5 +84,4 @@ void BST::inOrder(){
   if (right != nullptr)
     right->inOrder();
 }
-
 

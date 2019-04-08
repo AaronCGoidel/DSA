@@ -22,10 +22,9 @@ class BST{
   /* some private helper functions */
   void visit() const;
   bool isLeaf() const;
+  double sumNodes(BST* root);
 
   void calculateCost(BST* justAdded);
-  double getSumProb();
-  
 
  public:
   int key;
