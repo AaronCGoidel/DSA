@@ -10,6 +10,8 @@
 using namespace std;
 
 // Constructor, destructor, copy 
+BST::BST(){
+}
 BST::BST(int k, double p){
   key = k; 
   prob = p; cost = p; // cost and prob are same for singleton
@@ -17,13 +19,31 @@ BST::BST(int k, double p){
   first = k; last = k; //start and end are root for singleton
 }
 BST::BST(BST &b2){
-  key = b2.getKey();
-  prob = b2.getProb();
-  cost = b2.getCost();
-  left = b2.getLeft();
-  right = b2.getRight();
-  first = b2.getFirst();
-  last = b2.getLast();
+  BST* clone = copyHelper(&b2);
+
+  key = clone->getKey();
+  prob = clone->getProb();
+  cost = clone->getCost();
+  left = clone->getLeft();
+  right = clone->getRight();
+  first = clone->getFirst();
+  last = clone->getLast();
+}
+
+BST* BST::copyHelper(BST* toCopy){
+  if(toCopy == NULL) return NULL;
+  
+  BST* copyNode = new BST();
+  copyNode->key = toCopy->getKey();
+  copyNode->prob = toCopy->getProb();
+  copyNode->cost = toCopy->getCost();
+  copyNode->first = toCopy->getFirst();
+  copyNode->last = toCopy->getLast();
+
+  copyNode->left = copyHelper(toCopy->getLeft());
+  copyNode->right = copyHelper(toCopy->getRight());
+
+  return copyNode;
 }
   
 
@@ -62,6 +82,7 @@ BST* BST::getRight() { return right;}
 
 /* Mutators */
 bool BST::addLeft(BST* l){
+  if(l == NULL) return false;
   assert(l->getKey() < key);
   left = l;
   first = l->getFirst();
@@ -70,6 +91,7 @@ bool BST::addLeft(BST* l){
 }
 
 bool BST::addRight(BST* r){
+  if(r == NULL) return false;
   assert(r->getKey() > key);
   right = r;
   last = r->getLast();

@@ -32,10 +32,11 @@ class BST{
   double prob; //individual probability
   int first; //farthest left number
   int last; //farthest right number
+  explicit BST();
   explicit BST(int k, double p);
   //need a copy constructor
   explicit BST(BST &b2);
-  
+  BST* copyHelper(BST*);
 
   /* Accessors */
   int getKey();

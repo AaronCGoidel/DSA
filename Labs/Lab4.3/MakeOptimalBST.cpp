@@ -29,42 +29,52 @@ void sort(std::vector<BST*> &treeNodes){
 }
 
 BST* getTree(std::vector<std::vector<BST*> > optimals, int size, int start, int end){
-  BST* optimal;
   //iterate over all trees in optimal at appropraite row (size)
-  for(int i = 0; i < optimals[size].size(); i++){
-    BST* current = optimals[size][i];
+  for(int i = 0; i < optimals[size - 1].size(); i++){
+    BST* current = optimals[size - 1][i];
     if(current->getFirst() == start && current->getLast() == end){
       // and return a copy of the one with
       //chosen start and end
-      optimal = new BST(*current);
-      return optimal;
+      BST* best = new BST(* current);
+      // std::cout << best << std::endl;
+      // std::cout << current << std::endl;
+      return best;
     }
   }
+  return NULL;
 }
 
 void getOptimal(int size, std::vector<BST* > keys, std::vector<std::vector<BST*> > optimal){
   // keys is the first row of optimals (just the singleton keys)
-
-  std::vector<BST* > trees(100); // where all trees will be stored
+  std::vector<BST* > trees(0); // where all trees will be stored
   //while figuring out which minimizes cost
 
   // iterate over keys size distance apart
-  for(int i = 0; i < keys.size() - size; i++){
-    int minCost = INT_MAX;
-    for(int j = i; j < size; j++){
+  for(int i = 0; i <= keys.size() - size; i++){
+    int leftmost = i;
+    int rightmost = i + size - 1;
+
+    for(int j = i; j < i + size; j++){
       BST* root = keys[j];
-      if(i < j){
-        BST* left = getTree(optimal, j - i, keys[i]->getKey(), keys[j - i]->getKey());
+
+      if(j > leftmost){
+        std::cout << "left" << std::endl;
+        BST* left = getTree(optimal, j - leftmost, keys[i]->getKey(), keys[j - 1]->getKey());
+        // left->inOrder();
         root->addLeft(left);
       }
-      if(i > j){
-        BST* right = getTree(optimal, i - j, keys[j]->getKey(), keys[i + size]->getKey());
-        root->addLeft(right);
+      if(j < rightmost){
+        std::cout << "right" << std::endl;
+        BST* right = getTree(optimal, rightmost - j, keys[j + 1]->getKey(), keys[i + size - 1]->getKey());
+        // right->inOrder();
+        root->addRight(right);
       }
-      if(root->getCost() < minCost) trees[i] = root;
+
+      // root->inOrder();
+      // trees.push_back(root);
     }
   }
-  optimal.push_back(trees);
+  // optimal.push_back(trees);
   // get appropriate root node and construct the tree with that root node
   // and optimal subtree of appropriate size
   // once the tree is constructed put it in trees
@@ -77,9 +87,11 @@ void getOptimal(int size, std::vector<BST* > keys, std::vector<std::vector<BST*>
 
 int main(){
   // no duplicate keys are allowed
-  static const int key[] = {3, 5, 20, 4, 1, 19, 6, 7};
+  // static const int key[] = {3, 5, 20, 4, 1, 19, 6, 7};
+  static const int key[] = {1, 3};
   std::vector<int> keys(key, key + sizeof(key) / sizeof(key[0]) );
-  static const double prob[] = {.12, .4, .04, .3, .09, .1, .2, .29};
+  // static const double prob[] = {.12, .4, .04, .3, .09, .1, .2, .29};
+  static const double prob[] = {.11, .4};
   std::vector<double> probs(prob, prob + sizeof(prob) / sizeof(prob[0]) );
   int numKeys = keys.size();
   
@@ -91,10 +103,10 @@ int main(){
   sort(singletons);
   // put that in the first row of optimals
   optimals.push_back(singletons);
-
   // set current size var to 2
   // start calling get optimal for each size 2 - numKeys
-  for(int size = 2; size < numKeys; size++){
+
+  for(int size = 2; size <= numKeys; size++){
     getOptimal(size, singletons, optimals);
   }
 
